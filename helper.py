@@ -60,10 +60,10 @@ def process_course(link):
 	code = process_course_code(link)
 	sessions = process_course_info(read)
 
-	return (code, title, sessions)
+	return {"code": code, "course": title, "sections": sessions}
 
 # link = "https://www.umb.edu/academics/course_catalog/course_info/ugrd_ASIAN_2018 Spring_115L"
 # link = "https://www.umb.edu/academics/course_catalog/course_info/ugrd_ART_2018 Spring_380"
 # link = "https://www.umb.edu/academics/course_catalog/course_info/grd_SPE G_2018%20Spring_621"
-link = "https://www.umb.edu/academics/course_catalog/course_info/ugrd_CS_2018 Spring_110"
-print(process_course(link))
+# link = "https://www.umb.edu/academics/course_catalog/course_info/ugrd_CS_2018 Spring_110"
+# print(process_course(link))

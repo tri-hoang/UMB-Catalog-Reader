@@ -1,4 +1,5 @@
 from helper import *
+import json
 
 URL = "https://www.umb.edu/academics/course_catalog/subjects/2018%20Spring"
 SEM = "<p>2018 Spring"
@@ -21,8 +22,9 @@ for i in urls:
 	m_urls = get_URLs(m_url)
 	courses = []
 	for j in m_urls:
-		courses += process_course(j)
-	major = {"title": title, "courses": courses}
-	majors += major
+		courses.append(process_course(j))
+	major = {"major": title, "courses": courses}
+	majors.append(major)
 
-print(majors)
+with open("umb.txt", 'wb') as outfile:
+    json.dump(majors, outfile)
