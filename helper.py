@@ -39,14 +39,27 @@ def process_course_code(link):
 	n = rlink[n_start + 1: n_start + n_end + 1][::-1]
 	return(n + " " + c)
 
+def process_course_info(text):
+	sessions = {}
+	while text.find("class-info-rows") != -1:
+		text = text[text.find("class-info-rows"):]
+		sess = cut_text(text, "Section\">", "</td>")[9:-5].strip()
+		classnum = cut_text(text, "Class Number\">", "</td>")[14:-5].strip()
+		schedule = cut_text(text, "Schedule/Time\">", "</td>")[15:-5].strip()
+		prof = cut_text(text, "Instructor\">", "</td>")[12:-5].strip()
+		location = cut_text(text, "Location\">", "</td>")[10:-5].strip()
+		sessions[classnum] = {"Section": sess, "ClassNumber": classnum, "ScheduleTime": schedule, "Instructor": prof, "Location": location}
+		text = text[text.find("More Info"):]
+	return sessions.values()
+
 def process_course(link):
 	read = read_URL(link)
-	print(read)
+	# print(read)
 
 	title = cut_text(read, "id='page-title'>", "</h2>")[16:-5]
 	code = process_course_code(link)
+	sessions = process_course_info(read)
 
-	sessions = []
 	return (code, title, sessions)
 
 # link = "https://www.umb.edu/academics/course_catalog/course_info/ugrd_ASIAN_2018 Spring_115L"
