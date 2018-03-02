@@ -5,21 +5,29 @@ from bs4 import BeautifulSoup
 
 def read_URL(URL):
 	header = {'User-Agent':str(UserAgent().chrome)}
-	html = requests.get(URL, headers=header)
-	return html.text
+	try:
+		html = requests.get(URL, headers=header)
+		return html.text
+	except KeyboardInterrupt:
+		quit()
+	except:
+		print("helper.py:read_URL:", str(URL))
+		return ""
 
 def cut_text(text, start, end):
 	sloc = text.find(start)
 	eloc = text[sloc:].find(end)
 	return text[sloc: sloc+eloc+len(end)]
 
-def get_URLs(text):
+def get_URLs(text, strfilter=""):
 	# urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', text)
 	soup = BeautifulSoup(text, "html.parser")
 	anchors = soup.findAll("a")
 	links = []
 	for a in anchors:
-		links.append(a["href"])
+		# print(a["href"])
+		if strfilter in str(a["href"]):
+			links.append(a["href"])
 	return links
 
 # f = open("catalog.txt", "r")
